@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اطلاعات ارسال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <header class="header">
+            <div>
+                <h1 class="header-title">اطلاعات ارسال</h1>
+                <p class="header-subtitle">فروشگاه مرجع تخصصی لوازم الکترونیکی Psychomir</p>
+            </div>
+        </header>
+
+        <div class="container content">
+            <form method="POST" action="{% url 'update_send' %}" class="signup-form">
+                {% csrf_token %}
+                <h1>اطلاعات ارسال</h1>
+
+                <div class="input-box">
+                    <i class="fa fa-user"></i>
+                    {{ shipping_form.shipping_full_name }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-envelope"></i>
+                    {{ shipping_form.shipping_email }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-phone"></i>
+                    {{ shipping_form.shipping_phone }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-map-marker-alt"></i>
+                    {{ shipping_form.shipping_address }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-city"></i>
+                    {{ shipping_form.shipping_city }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-location-arrow"></i>
+                    {{ shipping_form.shipping_state }}
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-barcode"></i>
+                    {{ shipping_form.shipping_zipcode }}
+                </div>
+
+                <button type="submit" class="btn">ذخیره اطلاعات</button>
+            </form>
+        </div>
+    </div>
+</body>
+<style>
+    .page-container {
+        margin: 0;
+        background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 50px;
+    }
+
+    .header-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .header-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .content {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .signup-form h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #fff;
+        font-size: 1.8rem;
+    }
+
+    .input-box {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-box input {
+        width: 100%;
+        padding: 15px 50px;
+        border: none;
+        border-radius: 30px;
+        outline: none;
+        font-size: 1rem;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-box i {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        color: #555;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 30px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(106, 17, 203, 0.5);
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 40px;
+        color: #fff;
+        font-size: 0.8rem;
+    }
+
+    .footer a {
+        color: #ffdd57;
+        text-decoration: none;
+    }
+</style>
+</html>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                لطفا منتظر بمانید
+            </div>
+            <div class="card-body">
+                <div class="loading-spinner"></div>
+                <h5 class="card-title">در حال انتقال به صفحه پرداخت</h5>
+                <p class="card-text">سفارش شما با موفقیت ثبت شد و تا چند لحظه دیگر به صفحه پرداخت هدایت می‌شوید.</p>
+            </div>
+        </div>
+    </div>        
+</div>
+
+<style>
+    body {
+        font-family: 'Vazir', sans-serif;
+        background: linear-gradient(135deg, #f9f9f9, #f1f1f1);
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        margin-top: 100px;
+    }
+
+    .card {
+        max-width: 500px;
+        margin: auto;
+        border-radius: 20px;
+        border: none;
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        overflow: hidden;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .card-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .card-text {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .loading-spinner {
+        margin: 20px auto;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #ff7e5f;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    setTimeout(function() {
+        window.location.href = "{{pay_url}}";
+    }, 3000);
+</script>
+
+{% endblock %}

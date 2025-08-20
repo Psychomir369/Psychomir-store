@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <title>دسته بندی محصولات</title>
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">دسته بندی محصولات</h1>
+            <p class="lead fw-normal text-white-50 mb-0">فروشگاه مرجع تخصصی لوازم الکترونیکی Psychomir</p>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        </div>
+    </div>
+</header>
+
+<br><br>
+<div class="container">
+    <div class="row">
+        {% for cat in category %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card category-card shadow-sm border-0 rounded-lg">
+                <div class="card-body text-center">
+                    {% if cat.name == 'دوربین' %}
+                        <i class="fas fa-3x fa-camera text-primary mb-3"></i>
+                    {% elif cat.name == 'هدفون و هندزفری' %}
+                        <i class="fas fa-3x fa-headphones-alt text-primary mb-3"></i>
+                    {% elif cat.name == 'مودم' %}
+                        <i class="fas fa-3x fa-wifi text-primary mb-3"></i>
+                    {% elif cat.name == 'ساعت هوشمند' %}
+                        <i class="fas fa-3x fa-clock text-primary mb-3"></i>
+                    {% elif cat.name == 'فضای ذخیره سازی' %}
+                        <i class="fas fa-3x fa-hdd text-primary mb-3"></i>
+                    {% elif cat.name == 'کیف' %}
+                        <i class="fas fa-3x fa-suitcase text-primary mb-3"></i>
+                    {% elif cat.name == 'موبایل' %}
+                        <i class="fas fa-3x fa-mobile-alt text-primary mb-3"></i>
+                    {% elif cat.name == 'لپ تاپ' %}
+                        <i class="fas fa-3x fa-laptop text-primary mb-3"></i>
+                    {% endif %}
+                    <h5 class="card-title text-primary">{{ cat.name }}</h5>
+                    <a href="{% url 'category' cat.name %}" class="btn btn-outline-primary mt-3">مشاهده بیشتر</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .category-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 2rem;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        text-align: center;
+    }
+    
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    .fas {
+        color: #007bff;
+        transition: color 0.3s ease;
+    }
+    
+    .category-card:hover .fas {
+        color: #0056b3;
+    }
+    </style>
+<br><br>
+{% endblock %}

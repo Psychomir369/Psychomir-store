@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load humanize %}
+
+<div class="container">
+    <div class="product">
+        <title>{{ product.name }}</title>
+        <div class="product-images">
+            <img src="{{ product.picture.url }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-details">
+            <h1 class="product-title">{{ product.name }}</h1>
+            {% if product.is_sale %}
+                <p class="product-price">💰 قیمت : <strike>{{ product.price | intcomma }}</strike> {{ product.sale_price | intcomma }}</p>
+            {% else %}
+                <p class="product-price">💰 قیمت : {{ product.price | intcomma }}</p>
+            {% endif %}
+            <p class="product-status">{% if product.in_stock %}ناموجود{% else %}موجود است{% endif %}</p>
+            <p class="product-features">{{ product.description }}</p>
+            <div class="product-actions">
+                <button class="btn btn-primary" type="button" value="{{ product.id }}" id="add-cart">افزودن به سبد خرید</button>
+                <button class="btn btn-secondary" onclick="window.location.href='/'">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_add" %}',
+            data: {
+                product_id: $(this).val(),
+                product_qty: 1,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                document.getElementById('cart_quantity').textContent = json.qty;
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                console.error(errmsg);
+            }
+        });
+    });
+</script>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        color: #333;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .product {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .product-images {
+        flex: 1;
+        text-align: center;
+    }
+    .product-images img {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    .product-images img:hover {
+        transform: scale(1.05);
+    }
+    .product-details {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .product-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #212121;
+        margin-bottom: 10px;
+    }
+    .product-price {
+        font-size: 22px;
+        color: #e91e63;
+        margin: 15px 0;
+    }
+    .product-price strike {
+        color: #888;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    .product-status {
+        color: #4caf50;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .product-features {
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+    .product-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: auto;
+    }
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #ffc107;
+        color: #000;
+    }
+    .btn-secondary:hover {
+        background-color: #e0a800;
+    }
+    .btn:hover {
+        transform: scale(1.05);
+    }
+    .related-products {
+        margin-top: 30px;
+    }
+    .related-products h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .related-items {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+    }
+    .related-item {
+        min-width: 200px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 10px;
+    }
+    .related-item img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+<br><br><br><br>
+{% endblock %}

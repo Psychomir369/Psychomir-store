@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <title>سبد خرید</title>
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">سبد خرید شما</h1>
+            <p class="lead fw-normal text-white-50 mb-0">فروشگاه مرجع تخصصی لوازم الکترونیکی Psychomir</p>
+        </div>
+    </div>
+</header>
+
+<br>
+{% if cart_products %}
+{% for product in cart_products %}
+<div class="container">
+    <div class="product">
+        <div class="product-images">
+            <img src="{{ product.picture.url }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-details">
+            <h1 class="product-title">{{ product.name }}</h1>
+            {% if product.is_sale %}
+                <p class="product-price">💰 قیمت : <strike>{{ product.price | intcomma }}</strike> {{ product.sale_price | intcomma }}</p>
+            {% else %}
+                <p class="product-price">💰 قیمت : {{ product.price | intcomma }}</p>
+            {% endif %}
+            <p class="product-status">{% if product.in_stock %}ناموجود{% else %}موجود است{% endif %}</p>
+            <p class="card-text">تعداد :
+                <div class="quantity-selector" id="select{{ product.id }}">
+                    <button class="quantity-btn increase" onclick="updateQuantity('{{ product.id }}', 'increase')">+</button>
+                    <span class="quantity-value" id="quantity-{{ product.id }}">
+                        {% for key, value in quantities.items %}
+                            {% if key == product.id|slugify %}
+                                {{ value }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <button class="quantity-btn decrease" onclick="updateQuantity('{{ product.id }}', 'decrease')">−</button>
+                </div>
+            </p>
+            <div class="product-actions">
+                <button class="btn btn-primary update-product" type="button" data-index="{{ product.id }}">ویرایش</button>
+                <button class="btn btn-danger delete-product" type="button" data-index="{{ product.id }}">حذف</button>
+                <button class="btn btn-secondary" onclick="window.location.href='/'">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="order-summary">
+    <h3 class="total-order">مجموع کل سفارشات : <span>{{ total | intcomma }} تومان</span></h3>
+    <a href="{% url 'checkout' %}" class="btn btn-checkout">صورتحساب</a>
+</div>
+{% else %}
+<br><br><br><br>
+<center><h3 class="container">سبد خرید شما خالی است &#128546;</h3></center>
+{% endif %}
+
+<br><br><br><br><br><br><br>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on('click', '.update-product', function (e) {
+        e.preventDefault();
+        var productId = $(this).data('index');
+        const newQuantity = parseInt(document.getElementById(`quantity-${productId}`).textContent);
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_update" %}',
+            data: {
+                action: 'post',
+                product_id: productId,
+                product_qty: newQuantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, errmsg, err) {
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-product', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('index');
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_delete" %}',
+            data: {
+                action: 'post',
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, errmsg, err) {
+            }
+        });
+    });
+
+    function updateQuantity(productId, action) {
+        const quantityElement = document.getElementById(`quantity-${productId}`);
+        let currentQuantity = parseInt(quantityElement.textContent);
+
+        if (isNaN(currentQuantity)) {
+            return;
+        }
+
+        if (action === 'increase') {
+            currentQuantity++;
+        } else if (action === 'decrease' && currentQuantity > 1) {
+            currentQuantity--;
+        }
+
+        quantityElement.textContent = currentQuantity;
+    }
+</script>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        color: #333;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .product {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .product-images {
+        flex: 1;
+        text-align: center;
+    }
+    .product-images img {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    .product-images img:hover {
+        transform: scale(1.05);
+    }
+    .product-details {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .product-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #212121;
+        margin-bottom: 10px;
+    }
+    .product-price {
+        font-size: 22px;
+        color: #e91e63;
+        margin: 15px 0;
+    }
+    .product-price strike {
+        color: #888;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    .product-status {
+        color: #4caf50;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        width: 120px;
+        padding: 5px 10px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .quantity-btn {
+        background-color: transparent;
+        border: none;
+        color: #ff3e6c;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+    }
+    .quantity-btn:hover {
+        color: #e6325e;
+    }
+    .quantity-value {
+        font-size: 18px;
+        color: #333;
+        font-weight: bold;
+    }
+    .product-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: auto;
+    }
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #ffc107;
+        color: #000;
+    }
+    .btn-secondary:hover {
+        background-color: #e0a800;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    .btn:hover {
+        transform: scale(1.05);
+    }
+    .order-summary {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+    }
+    .total-order {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    .total-order span {
+        color: #e91e63;
+    }
+    .btn-checkout {
+        background-color: #28a745;
+        color: #fff;
+        font-size: 18px;
+        padding: 15px 30px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-checkout:hover {
+        background-color: #218838;
+    }
+</style>
+{% endblock %}

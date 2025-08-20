@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <title>جستجو محصولات</title>
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">جستجو محصولات</h1>
+            <p class="lead fw-normal text-white-50 mb-0">فروشگاه مرجع تخصصی لوازم الکترونیکی Psychomir</p>
+        </div>
+    </div>
+</header>
+
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5>جستجو</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'search' %}" method="POST" class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="text" class="form-control me-2" placeholder="جستجو محصولات" name="searched">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> جستجو
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {% if searched %}
+            {% for item in searched %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        {% if item.is_sale %}
+                            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">تخفیف ویژه</div>
+                        {% endif %}
+                        <img class="card-img-top" src="{{ item.picture.url }}" alt="{{ item.name }}">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">{{ item.name }}</h5>
+                                <div class="d-flex justify-content-center small text-warning mb-2">
+                                    {% for _ in ''|center:item.star %}
+                                        <div class="bi-star-fill"></div>
+                                    {% endfor %}
+                                </div>
+                                {% if item.is_sale %}
+                                    <strike>{{ item.price | intcomma }} تومان</strike>
+                                    <br>
+                                    <span class="text-danger fw-bold">{{ item.sale_price | intcomma }} تومان</span>
+                                {% else %}
+                                    {{ item.price | intcomma }} تومان
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href="{% url 'product' item.id %}">صفحه محصول</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center text-muted">محصولی یافت نشد</div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'IRANSans', sans-serif;
+    }
+
+    .form-control {
+        border-radius: 30px;
+    }
+
+    .btn-primary {
+        border-radius: 30px;
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .card {
+        border: none;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.5em 1em;
+        border-radius: 10px;
+    }
+</style>
+<br><br><br><br><br><br>
+{% endblock %}

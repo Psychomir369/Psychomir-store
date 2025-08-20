@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <title>درباره ما</title>
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">درباره ما</h1>
+            <p class="lead fw-normal text-white-50 mb-0">فروشگاه مرجع تخصصی لوازم الکترونیکی Psychomir</p>
+        </div>
+    </div>
+</header>
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <p align="justify" class="text-muted fs-5">
+                        <strong>فروشگاه Psychomir:</strong><br>
+                        مرجع تخصصی لوازم الکترونیکی. ما در Psychomir به ارائه‌ی بهترین و به‌روزترین محصولات الکترونیکی برای علاقه‌مندان و حرفه‌ای‌ها متعهد هستیم. هدف ما این است که تجربه‌ای متفاوت از خرید آنلاین را با ارائه‌ی کالاهای باکیفیت، قیمت مناسب و اطلاعات دقیق محصول به مشتریان عزیز فراهم کنیم.
+                    </p>
+                    <p align="justify" class="text-muted fs-5">
+                        <strong>چرا Psychomir را انتخاب کنید؟</strong><br>
+                        ما با افتخار به‌عنوان یکی از مراجع تخصصی در زمینه لوازم الکترونیکی، تضمین می‌کنیم که تمامی محصولات موجود در فروشگاه با ضمانت اصالت و کیفیت عرضه می‌شوند. تیم ما با بهره‌گیری از سال‌ها تجربه در این صنعت، محصولاتی متنوع مانند دوربین‌های دیجیتال، ساعت‌های هوشمند، مودم‌ها و تجهیزات ذخیره‌سازی را به شما ارائه می‌دهد.
+                    </p>
+                    <p align="justify" class="text-muted fs-5">
+                        <strong>ارزش‌ها و تعهد ما به مشتریان:</strong><br>
+                        در Psychomir، مشتری‌مداری و ارائه خدمات باکیفیت از اولویت‌های اصلی ما است. ما همواره در تلاش هستیم تا با ایجاد یک بستر امن و قابل‌اعتماد، نیازهای مشتریان خود را برآورده کنیم. همچنین، تخفیف‌های ویژه و پیشنهادهای جذابی را به‌طور منظم ارائه می‌دهیم تا تجربه‌ی خرید به‌یادماندنی را برای شما رقم بزنیم.
+                    </p>
+                    <p align="justify" class="text-muted fs-5">
+                        <strong>تماس با ما:</strong>
+                    </p>
+                    <ul class="list-unstyled text-muted fs-5">
+                        <li class="mb-2">
+                            <i class="bi bi-envelope text-primary"></i> ایمیل: <span>amirjafarpoor31@gmail.com</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-phone text-primary"></i> تماس: <span>09011540556</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+{% endblock %}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+    }
+
+    .bi {
+        font-size: 1.2rem;
+        vertical-align: middle;
+    }
+
+    ul.list-unstyled li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    ul.list-unstyled li i {
+        font-size: 1.5rem;
+    }
+</style>
